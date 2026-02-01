@@ -1,14 +1,20 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>字母雨打字游戏</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      background: radial-gradient(1200px 600px at 80% -100%, rgba(56,189,248,0.2), transparent), linear-gradient(135deg, #0f172a, #1e293b 60%, #0b1220);
+      background: radial-gradient(1200px 600px at 80% -100%, rgba(56, 189, 248, 0.2), transparent), linear-gradient(135deg, #0f172a, #1e293b 60%, #0b1220);
       color: #fff;
       min-height: 100vh;
       display: flex;
@@ -17,112 +23,280 @@
       padding: 20px;
       overflow: hidden;
     }
-    .container { width: 100%; max-width: 980px; }
-    header { margin-bottom: 16px; text-align: center; }
-    h1 { font-size: 28px; letter-spacing: .5px; }
-    .subtitle { margin-top: 6px; opacity: .85; font-size: 14px; }
+
+    .container {
+      width: 100%;
+      max-width: 980px;
+    }
+
+    header {
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 28px;
+      letter-spacing: .5px;
+    }
+
+    .subtitle {
+      margin-top: 6px;
+      opacity: .85;
+      font-size: 14px;
+    }
+
     .info {
-      display: grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: 8px;
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 8px;
       margin: 14px 0;
     }
+
     .box {
-      background: rgba(0,0,0,.28);
-      border: 1px solid rgba(255,255,255,.12);
-      border-radius: 12px; padding: 10px 12px; text-align: center;
+      background: rgba(0, 0, 0, .28);
+      border: 1px solid rgba(255, 255, 255, .12);
+      border-radius: 12px;
+      padding: 10px 12px;
+      text-align: center;
     }
-    .box .t { font-size: 12px; color: #a3a3a3; }
-    .box .v { font-size: 20px; font-weight: 700; margin-top: 4px; }
+
+    .box .t {
+      font-size: 12px;
+      color: #a3a3a3;
+    }
+
+    .box .v {
+      font-size: 20px;
+      font-weight: 700;
+      margin-top: 4px;
+    }
+
     .game {
-      position: relative; width: 100%; height: 480px;
-      background: rgba(0,0,0,.22);
-      border: 1px solid rgba(255,255,255,.1);
-      border-radius: 12px; overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0,0,0,.25) inset;
+      position: relative;
+      width: 100%;
+      height: 680px;
+      background: rgba(0, 0, 0, .22);
+      border: 1px solid rgba(255, 255, 255, .1);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, .25) inset;
     }
+
     .letter {
       position: absolute;
-      left: 0; top: 0; transform: translate3d(-9999px,-9999px,0);
-      font-size: 28px; font-weight: 800; letter-spacing: .5px;
-      color: #fff; text-shadow: 0 2px 6px rgba(0,0,0,.5);
-      user-select: none; will-change: transform;
+      left: 0;
+      top: 0;
+      transform: translate3d(-9999px, -9999px, 0);
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: .5px;
+      color: #fff;
+      text-shadow: 0 2px 6px rgba(0, 0, 0, .5);
+      user-select: none;
+      will-change: transform;
       transition: scale .1s ease, filter .15s ease;
       pointer-events: none;
     }
+
     .comboFX {
       position: absolute;
-      left: 0; top: 0;
-      transform: translate3d(-9999px,-9999px,0);
+      left: 0;
+      top: 0;
+      transform: translate3d(-9999px, -9999px, 0);
       font-size: 20px;
       font-weight: 800;
       color: #ffcc00;
-      text-shadow: 0 2px 6px rgba(0,0,0,.6);
+      text-shadow: 0 2px 6px rgba(0, 0, 0, .6);
       pointer-events: none;
       opacity: 0;
       will-change: transform, opacity;
       animation: comboUp 800ms ease-out forwards;
     }
-    .comboFX.bonus { color: #f87171; } /* 高连击带加分显示为红色 */
-    @keyframes comboUp {
-      0%   { transform: translate3d(var(--x,0), calc(var(--y,0)), 0) scale(1); opacity: 0; }
-      10%  { opacity: 1; }
-      100% { transform: translate3d(var(--x,0), calc(var(--y,0) - 60px), 0) scale(1.2); opacity: 0; }
+
+    .comboFX.bonus {
+      color: #f87171;
     }
+
+    /* 高连击带加分显示为红色 */
+    @keyframes comboUp {
+      0% {
+        transform: translate3d(var(--x, 0), calc(var(--y, 0)), 0) scale(1);
+        opacity: 0;
+      }
+
+      10% {
+        opacity: 1;
+      }
+
+      100% {
+        transform: translate3d(var(--x, 0), calc(var(--y, 0) - 60px), 0) scale(1.2);
+        opacity: 0;
+      }
+    }
+
     .controls {
-      display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
       margin-top: 14px;
     }
+
     .chip {
-      display: inline-flex; align-items: center; gap: 10px;
-      background: rgba(0,0,0,.28);
-      border: 1px solid rgba(255,255,255,.12);
-      border-radius: 999px; padding: 8px 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(0, 0, 0, .28);
+      border: 1px solid rgba(255, 255, 255, .12);
+      border-radius: 999px;
+      padding: 8px 14px;
       font-size: 14px;
     }
+
     button {
-      background: #111c32; color: #fff;
-      border: 1px solid rgba(255,255,255,.16);
-      padding: 3px 16px; border-radius: 10px;
-      cursor: pointer; transition: transform .06s ease, background .2s ease, border-color .2s ease;
+      background: #111c32;
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, .16);
+      padding: 3px 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: transform .06s ease, background .2s ease, border-color .2s ease;
     }
-    button:hover { background: #13213b; border-color: rgba(255,255,255,.3); }
-    button:active { transform: translateY(1px); }
-    button.active { background: #1f2d4a; border-color: rgba(56,189,248,.6); }
+
+    button:hover {
+      background: #13213b;
+      border-color: rgba(255, 255, 255, .3);
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+
+    button.active {
+      background: #1f2d4a;
+      border-color: rgba(56, 189, 248, .6);
+    }
+
     .over {
-      position: absolute; inset: 0; display: none; place-items: center;
-      background: rgba(0,0,0,.75); z-index: 10;
+      position: absolute;
+      inset: 0;
+      display: none;
+      place-items: center;
+      background: rgba(0, 0, 0, .75);
+      z-index: 10;
     }
+
     .overcard {
-      background: rgba(15,23,42,.9);
-      border: 1px solid rgba(255,255,255,.12);
-      border-radius: 14px; padding: 20px 22px; text-align: center; width: 88%;
-      max-width: 420px; box-shadow: 0 10px 40px rgba(0,0,0,.4);
+      background: rgba(15, 23, 42, .9);
+      border: 1px solid rgba(255, 255, 255, .12);
+      border-radius: 14px;
+      padding: 20px 22px;
+      text-align: center;
+      width: 88%;
+      max-width: 420px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, .4);
       animation: pop .35s ease both;
     }
-    .overcard h2 { font-size: 22px; color: #f87171; margin-bottom: 8px; }
-    .ovstats { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; margin: 10px 0; }
-    .ovstats .box { padding: 10px; }
-    @keyframes pop { 0% { transform: scale(.8); opacity: 0; } 70% { transform: scale(1.05); } 100% { transform: scale(1); opacity: 1; } }
+
+    .overcard h2 {
+      font-size: 22px;
+      color: #f87171;
+      margin-bottom: 8px;
+    }
+
+    .ovstats {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      margin: 10px 0;
+    }
+
+    .ovstats .box {
+      padding: 10px;
+    }
+
+    @keyframes pop {
+      0% {
+        transform: scale(.8);
+        opacity: 0;
+      }
+
+      70% {
+        transform: scale(1.05);
+      }
+
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
     @media (max-width: 768px) {
-      .info { grid-template-columns: repeat(2,minmax(0,1fr)); }
-      .game { height: 400px; }
+      .info {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .game {
+        height: 400px;
+      }
     }
+
     /* 游戏结束弹窗按钮高度增强 */
-    .overcard button { padding: 8px 16px; }
+    .overcard button {
+      padding: 8px 16px;
+    }
+
     /* 开关样式（钢琴声效） */
-    .switch { position: relative; display: inline-block; width: 46px; height: 26px; vertical-align: middle; }
-    .switch input { opacity: 0; width: 0; height: 0; }
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 46px;
+      height: 26px;
+      vertical-align: middle;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
     .switch .slider {
-      position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
-      background: #334155; border: 1px solid rgba(255,255,255,.2); transition: .2s; border-radius: 999px;
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #334155;
+      border: 1px solid rgba(255, 255, 255, .2);
+      transition: .2s;
+      border-radius: 999px;
     }
+
     .switch .slider:before {
-      content: ""; position: absolute; height: 20px; width: 20px; left: 3px; top: 2px; background: #fff;
-      transition: .2s; border-radius: 50%;
+      content: "";
+      position: absolute;
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      top: 2px;
+      background: #fff;
+      transition: .2s;
+      border-radius: 50%;
     }
-    .switch input:checked + .slider { background: #1f2d4a; border-color: rgba(56,189,248,.6); }
-    .switch input:checked + .slider:before { transform: translateX(20px); }
+
+    .switch input:checked+.slider {
+      background: #1f2d4a;
+      border-color: rgba(56, 189, 248, .6);
+    }
+
+    .switch input:checked+.slider:before {
+      transform: translateX(20px);
+    }
   </style>
 </head>
+
 <body>
   <div class="container">
     <header>
@@ -131,11 +305,26 @@
     </header>
 
     <div class="info">
-      <div class="box"><div class="t">得分</div><div class="v" id="score">0</div></div>
-      <div class="box"><div class="t">正确率</div><div class="v" id="acc">100%</div></div>
-      <div class="box"><div class="t">连击</div><div class="v" id="combo">0</div></div>
-      <div class="box"><div class="t">生命</div><div class="v" id="lives">5</div></div>
-      <div class="box"><div class="t">速度</div><div class="v" id="speed">1.0x</div></div>
+      <div class="box">
+        <div class="t">得分</div>
+        <div class="v" id="score">0</div>
+      </div>
+      <div class="box">
+        <div class="t">正确率</div>
+        <div class="v" id="acc">100%</div>
+      </div>
+      <div class="box">
+        <div class="t">连击</div>
+        <div class="v" id="combo">0</div>
+      </div>
+      <div class="box">
+        <div class="t">生命</div>
+        <div class="v" id="lives">500</div>
+      </div>
+      <div class="box">
+        <div class="t">速度</div>
+        <div class="v" id="speed">0.5x</div>
+      </div>
     </div>
 
     <div class="game" id="game">
@@ -145,8 +334,14 @@
           <div>最终得分：<b id="fScore">0</b></div>
           <div>最高连击：<b id="fCombo">0</b></div>
           <div class="ovstats">
-            <div class="box"><div class="t">正确率</div><div class="v" id="fAcc">100%</div></div>
-            <div class="box"><div class="t">时长</div><div class="v"><span id="fTime">00:00:00</span></div></div>
+            <div class="box">
+              <div class="t">正确率</div>
+              <div class="v" id="fAcc">100%</div>
+            </div>
+            <div class="box">
+              <div class="t">时长</div>
+              <div class="v"><span id="fTime">00:00:00</span></div>
+            </div>
           </div>
           <button id="btnRestart" style="margin-top:8px;">再玩一次</button>
           <button id="btnLater" style="margin-top:8px;margin-left:8px;">等下再玩</button>
@@ -159,7 +354,7 @@
       <div class="chip">
         <span>速度</span>
         <button id="spdDown">-</button>
-        <b id="spdCur">1.0</b>
+        <b id="spdCur">0.2</b>
         <button id="spdUp">+</button>
       </div>
       <div class="chip">
@@ -176,21 +371,29 @@
       <button id="btnBoard">榜单</button>
     </div>
     <!-- 榜单弹窗 -->
-    <div id="boardModal" style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.6);backdrop-filter:saturate(140%) blur(2px);">
-      <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:rgba(15,23,42,.95);border:1px solid rgba(255,255,255,.12);border-radius:14px;width:min(860px,92vw);max-width:860px;max-height:min(70vh,560px);box-shadow:0 10px 40px rgba(0,0,0,.5);display:flex;flex-direction:column;">
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.08);">
+    <div id="boardModal"
+      style="display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.6);backdrop-filter:saturate(140%) blur(2px);">
+      <div
+        style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:rgba(15,23,42,.95);border:1px solid rgba(255,255,255,.12);border-radius:14px;width:min(860px,92vw);max-width:860px;max-height:min(70vh,560px);box-shadow:0 10px 40px rgba(0,0,0,.5);display:flex;flex-direction:column;">
+        <div
+          style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.08);">
           <div style="font-weight:700;">挑战榜单</div>
-          <button id="btnBoardClose" style="padding:6px 10px;border-radius:8px;background:#111c32;color:#fff;border:1px solid rgba(255,255,255,.16);">关闭</button>
+          <button id="btnBoardClose"
+            style="padding:6px 10px;border-radius:8px;background:#111c32;color:#fff;border:1px solid rgba(255,255,255,.16);">关闭</button>
         </div>
         <div style="padding:10px;overflow:auto;">
           <table class="board-table" style="width:100%;font-size:14px;border-collapse:collapse;">
             <thead>
               <tr>
                 <th style="text-align:left;padding:6px 8px;position:sticky;top:0;background:rgba(15,23,42,.95);">时间</th>
-                <th style="text-align:right;padding:6px 8px;position:sticky;top:0;background:rgba(15,23,42,.95);">最终得分</th>
-                <th style="text-align:right;padding:6px 8px;position:sticky;top:0;background:rgba(15,23,42,.95);">最高连击</th>
-                <th style="text-align:right;padding:6px 8px;position:sticky;top:0;background:rgba(15,23,42,.95);">正确率</th>
-                <th style="text-align:right;padding:6px 8px;position:sticky;top:0;background:rgba(15,23,42,.95);">时长</th>
+                <th style="text-align:right;padding:6px 8px;position:sticky;top:0;background:rgba(15,23,42,.95);">最终得分
+                </th>
+                <th style="text-align:right;padding:6px 8px;position:sticky;top:0;background:rgba(15,23,42,.95);">最高连击
+                </th>
+                <th style="text-align:right;padding:6px 8px;position:sticky;top:0;background:rgba(15,23,42,.95);">正确率
+                </th>
+                <th style="text-align:right;padding:6px 8px;position:sticky;top:0;background:rgba(15,23,42,.95);">时长
+                </th>
               </tr>
             </thead>
             <tbody id="boardRows"></tbody>
@@ -250,9 +453,9 @@
         hits: 0,
         combo: 0,
         maxCombo: 0,
-        lives: 5,
-        speed: 1.0,        // 全局速度倍率（0.5~5.0）
-        spawnMs: 900,      // 生成间隔（会随难度调整）
+        lives: 500,       // 初始生命 500
+        speed: 0.2,        // 全局速度倍率（0.5~5.0）
+        spawnMs: 1900,      // 生成间隔（会随难度调整）
         letterBase: 110,   // px/s 基础下落速度
         letters: [],       // {el, ch, x, y, v}
         areaW: 0, areaH: 0,
@@ -299,7 +502,7 @@
         clearLetters();
         if (all) {
           S.score = 0; S.tries = 0; S.hits = 0; S.combo = 0; S.maxCombo = 0;
-          S.lives = 5; S.speed = 1.0; S.spawnMs = 900;
+          S.lives = 500; S.speed = 0.2; S.spawnMs = 1900;
           S.lastLvUp = 0;
         }
         S.running = false; S.paused = false;
@@ -471,7 +674,7 @@
         el.btnPause.textContent = '暂停';
       }
       function setSpeed(delta) {
-        S.speed = Math.max(0.5, Math.min(5.0, +(S.speed + delta).toFixed(1)));
+        S.speed = Math.max(0.1, Math.min(5.0, +(S.speed + delta).toFixed(1)));
         // 同步生成频率与速度的关系（越快越密）
         // 基于区间 [0.5, 5.0] 的归一化映射，保持 300~1050 范围
         const t = (5.0 - S.speed) / 4.5; // 1.0(0.5x) ~ 0.0(5.0x)
@@ -501,7 +704,7 @@
         } catch (_) { return []; }
       }
       function saveBoard(arr) {
-        try { localStorage.setItem(BoardKey, JSON.stringify(arr)); } catch (_) {}
+        try { localStorage.setItem(BoardKey, JSON.stringify(arr)); } catch (_) { }
       }
       function addBoardEntry(entry) {
         const arr = loadBoard();
@@ -514,7 +717,7 @@
         const arr = loadBoard();
         const rows = arr.map(e => {
           const dt = new Date(e.ts);
-          const timeStr = `${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')} ${String(dt.getHours()).padStart(2,'0')}:${String(dt.getMinutes()).padStart(2,'0')}`;
+          const timeStr = `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, '0')}-${String(dt.getDate()).padStart(2, '0')} ${String(dt.getHours()).padStart(2, '0')}:${String(dt.getMinutes()).padStart(2, '0')}`;
           return `<tr>
             <td style="padding:6px 8px;">${timeStr}</td>
             <td style="padding:6px 8px;text-align:right;">${e.score}</td>
@@ -542,10 +745,10 @@
           S.audioCtx = new AC();
         }
         if (S.audioCtx.state === 'suspended') {
-          S.audioCtx.resume().catch(()=>{});
+          S.audioCtx.resume().catch(() => { });
         }
         if (!S.mediaDest && S.audioCtx) {
-          try { S.mediaDest = S.audioCtx.createMediaStreamDestination(); } catch (_) {}
+          try { S.mediaDest = S.audioCtx.createMediaStreamDestination(); } catch (_) { }
         }
       }
       function midiToFreq(m) {
@@ -595,7 +798,7 @@
         g2.connect(filter);
         filter.connect(gain);
         gain.connect(S.audioCtx.destination);
-        if (S.mediaDest) { try { gain.connect(S.mediaDest); } catch (_) {} }
+        if (S.mediaDest) { try { gain.connect(S.mediaDest); } catch (_) { } }
 
         osc1.start(now);
         osc2.start(now);
@@ -605,7 +808,7 @@
         setTimeout(() => {
           try {
             osc1.disconnect(); osc2.disconnect(); g2.disconnect(); filter.disconnect(); gain.disconnect();
-          } catch (_) {}
+          } catch (_) { }
         }, 800);
       }
       function togglePiano() {
@@ -624,24 +827,24 @@
           S.recorder = new MediaRecorder(S.mediaDest.stream);
           S.recorder.ondataavailable = (e) => { if (e.data && e.data.size > 0) S.recordChunks.push(e.data); };
           S.recorder.onstop = () => {
-            try { S.recordBlob = new Blob(S.recordChunks, { type: 'audio/webm' }); } catch (_) {}
+            try { S.recordBlob = new Blob(S.recordChunks, { type: 'audio/webm' }); } catch (_) { }
             // 录音完成后，如果结束弹窗已显示，立即显示“下载录音”按钮
             try {
               if (el.over && el.over.style.display === 'grid' && el.btnDownload) {
                 el.btnDownload.style.display = S.recordBlob ? '' : 'none';
               }
-            } catch (_) {}
+            } catch (_) { }
           };
           S.recorder.start();
           S.isRecording = true;
-        } catch (_) {}
+        } catch (_) { }
       }
       function stopRecording() {
-        try { if (S.recorder && S.isRecording) S.recorder.stop(); } catch (_) {}
+        try { if (S.recorder && S.isRecording) S.recorder.stop(); } catch (_) { }
         S.isRecording = false;
       }
       function clearRecording() {
-        try { if (S.recorder && S.isRecording) S.recorder.stop(); } catch (_) {}
+        try { if (S.recorder && S.isRecording) S.recorder.stop(); } catch (_) { }
         S.recorder = null; S.recordChunks = []; S.recordBlob = null; S.isRecording = false;
       }
       function downloadRecording() {
@@ -651,7 +854,7 @@
         // 文件名：TypingRain-YYYYMMDD-HHMMSS.webm
         const now = new Date();
         const pad = n => String(n).padStart(2, '0');
-        const fname = `TypingRain-${now.getFullYear()}${pad(now.getMonth()+1)}${pad(now.getDate())}-${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}.webm`;
+        const fname = `TypingRain-${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}-${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}.webm`;
         a.href = url; a.download = fname;
         document.body.appendChild(a); a.click();
         setTimeout(() => { URL.revokeObjectURL(url); a.parentNode && a.parentNode.removeChild(a); }, 100);
@@ -709,7 +912,7 @@
         if (e.target === el.boardModal) el.boardModal.style.display = 'none';
       });
       // 初始化钢琴开关（默认关闭）
-      if (el.pianoSwitch) el.pianoSwitch.checked = false;
+      if (el.pianoSwitch) el.pianoSwitch.checked = true;
       S.soundOn = false;
       if (el.btnRecord) { el.btnRecord.textContent = '录制'; el.btnRecord.style.display = 'none'; }
 
@@ -718,52 +921,60 @@
       measure();
     })();
   </script>
-    </script>
-    
-        <style>
-        .corner-links {
-            position: fixed;
-            right: 20px;
-            bottom: 20px;
-            display: flex;
-            align-items: center;
-            z-index: 9999;
-        }
-        .corner-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 10px;
-            border-radius: 8px;
-            color: #ffffff;
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-        .corner-link:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(255, 255, 255, 0.15);
-        }
-        .corner-link img,
-        .corner-link svg {
-            width: 22px;
-            height: 22px;
-        }
-        .corner-link .label {
-            font-weight: 600;
-            font-size: 0.95rem;
-        }
-    </style>
-    <div class="corner-links" aria-label="页面固定链接">
-        <a class="corner-link" href="https://github.com/IIIStudio/TypingRain" target="_blank" rel="noopener noreferrer" aria-label="前往 GitHub 仓库">
-            <!-- 内联 GitHub 图标，避免外部资源依赖 -->
-            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
-                <path fill="#ffffff" d="M12 .5a12 12 0 0 0-3.79 23.41c.6.11.82-.26.82-.58v-2.02c-3.35.73-4.06-1.61-4.06-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.74.08-.74 1.2.09 1.83 1.23 1.83 1.23 1.07 1.83 2.8 1.3 3.49.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.51.12-3.15 0 0 1.01-.32 3.3 1.23.96-.27 1.99-.4 3.01-.4s2.05.14 3.01.4c2.29-1.55 3.3-1.23 3.3-1.23.66 1.64.25 2.85.12 3.15.77.84 1.24 1.91 1.24 3.22 0 4.61-2.8 5.63-5.47 5.93.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58A12 12 0 0 0 12 .5Z"/>
-            </svg>
-            <span class="label">TypingRain</span>
-        </a>
-        <a class="corner-link" href="https://cnb.cool/IIIStudio/HTML/Game/TypingRain/" target="_blank" rel="noopener noreferrer" aria-label="前往 TypingRain 文档页面">
-            <img src="https://docs.cnb.cool/images/logo/svg/LogoColorfulIcon.svg" alt="CNB Logo">
-        </a>
-    </div>
+  </script>
+
+  <style>
+    .corner-links {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      display: flex;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .corner-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      color: #ffffff;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .corner-link:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(255, 255, 255, 0.15);
+    }
+
+    .corner-link img,
+    .corner-link svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .corner-link .label {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+  </style>
+  <div class="corner-links" aria-label="页面固定链接">
+    <a class="corner-link" href="https://github.com/IIIStudio/TypingRain" target="_blank" rel="noopener noreferrer"
+      aria-label="前往 GitHub 仓库">
+      <!-- 内联 GitHub 图标，避免外部资源依赖 -->
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+        <path fill="#ffffff"
+          d="M12 .5a12 12 0 0 0-3.79 23.41c.6.11.82-.26.82-.58v-2.02c-3.35.73-4.06-1.61-4.06-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.74.08-.74 1.2.09 1.83 1.23 1.83 1.23 1.07 1.83 2.8 1.3 3.49.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.51.12-3.15 0 0 1.01-.32 3.3 1.23.96-.27 1.99-.4 3.01-.4s2.05.14 3.01.4c2.29-1.55 3.3-1.23 3.3-1.23.66 1.64.25 2.85.12 3.15.77.84 1.24 1.91 1.24 3.22 0 4.61-2.8 5.63-5.47 5.93.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58A12 12 0 0 0 12 .5Z" />
+      </svg>
+      <span class="label">TypingRain</span>
+    </a>
+    <a class="corner-link" href="https://cnb.cool/IIIStudio/HTML/Game/TypingRain/" target="_blank"
+      rel="noopener noreferrer" aria-label="前往 TypingRain 文档页面">
+      <img src="https://docs.cnb.cool/images/logo/svg/LogoColorfulIcon.svg" alt="CNB Logo">
+    </a>
+  </div>
 </body>
+
 </html>
