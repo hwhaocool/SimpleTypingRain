@@ -25,8 +25,8 @@
     }
 
     .container {
-      width: 100%;
-      max-width: 980px;
+      width: 90%;
+      
     }
 
     header {
@@ -74,7 +74,7 @@
     .game {
       position: relative;
       width: 100%;
-      height: 680px;
+      height: 980px;
       background: rgba(0, 0, 0, .22);
       border: 1px solid rgba(255, 255, 255, .1);
       border-radius: 12px;
@@ -87,7 +87,7 @@
       left: 0;
       top: 0;
       transform: translate3d(-9999px, -9999px, 0);
-      font-size: 28px;
+      font-size: 100px;  /* 增大字体 */
       font-weight: 800;
       letter-spacing: .5px;
       color: #fff;
@@ -454,9 +454,9 @@
         combo: 0,
         maxCombo: 0,
         lives: 500,       // 初始生命 500
-        speed: 0.2,        // 全局速度倍率（0.5~5.0）
-        spawnMs: 1900,      // 生成间隔（会随难度调整）
-        letterBase: 110,   // px/s 基础下落速度
+        speed: 0.1,        // 全局速度倍率（0.1~5.0）
+        spawnMs: 3500,      // 生成间隔（会随难度调整）
+        letterBase: 110,   // 修改基础下落速度为0.1 px/s
         letters: [],       // {el, ch, x, y, v}
         areaW: 0, areaH: 0,
         raf: 0,
@@ -502,7 +502,7 @@
         clearLetters();
         if (all) {
           S.score = 0; S.tries = 0; S.hits = 0; S.combo = 0; S.maxCombo = 0;
-          S.lives = 500; S.speed = 0.2; S.spawnMs = 1900;
+          S.lives = 500; S.speed = 0.1; S.spawnMs = 3500;
           S.lastLvUp = 0;
         }
         S.running = false; S.paused = false;
@@ -913,8 +913,8 @@
       });
       // 初始化钢琴开关（默认关闭）
       if (el.pianoSwitch) el.pianoSwitch.checked = true;
-      S.soundOn = false;
-      if (el.btnRecord) { el.btnRecord.textContent = '录制'; el.btnRecord.style.display = 'none'; }
+      S.soundOn = true;
+      if (el.btnRecord) { el.btnRecord.textContent = '录制'; el.btnRecord.style.display = ''; }
 
       // 初始化
       reset(true);
